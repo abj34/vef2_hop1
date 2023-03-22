@@ -123,9 +123,10 @@ export async function getExams() {
 }
 
 export async function insertExam(exam) {
-    const q = 'INSERT INTO exams (name, slug, description) VALUES ($1, $2, $3) RETURNING *';
+    const q = `INSERT INTO exams (name, slug, description, image)
+               VALUES ($1, $2, $3, $4) RETURNING *`;
 
-    const values = [exam.name, exam.slug, exam.description];
+    const values = [exam.name, exam.slug, exam.description, exam.image];
     const result = await query(q, values);
 
     return result?.rows[0];

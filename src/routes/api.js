@@ -4,7 +4,7 @@ import { createUser, findById, findByUsername, updateUser, listUsers } from '../
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listExams, getExam, updateExam, deleteExam } from './exams.js';
+import { listExams, getExam, updateExam, deleteExam, createExam } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
 
 
@@ -142,6 +142,7 @@ router.patch(
 
 //==========================================
 router.get('/exams', listExams);
+router.post('/exams', createExam);
 router.get('/exams/:slug', getExam);
 router.post('/exams/:slug', createQuestion)
 router.patch('/exams/:slug', updateExam);   // Á eftir að útfæra

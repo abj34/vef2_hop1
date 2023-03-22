@@ -77,12 +77,13 @@ export const createExam = [
  * @returns Nýja exam
  */
 export async function createExamHandler(req, res, next) {
-    const { name, description } = req.body;
+    const { name, description, image } = req.body;
 
     const examToCreate = {
         name,
         slug: slugify(name),
-        description
+        description,
+        image
     };
 
     const createdExam = await insertExam(examToCreate);
