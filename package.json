@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "dotenv -e .env -- nodemon ./src/app.js",
     "start": "dotenv -e .env node ./src/app.js",
-    "setup": "dotenv -e .env node ./src/setup/setup.js",
+    "setup": "dotenv -e .env node ./src/setup.js",
     "lint": "eslint . --ext .js",
     "build": "node ./src/build.js && cpy public dist"
   },

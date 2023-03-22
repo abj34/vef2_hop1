@@ -2,6 +2,7 @@ import pg from 'pg';
 import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
 import { examMapper, mapDbExamsToExams } from '../routes/exams.js';
+import { questionMapper } from '../routes/questions.js';
 
 const SCHEMA_FILE = './sql/schema.sql';
 const DROP_SCHEMA_FILE = './sql/drop.sql';
@@ -156,12 +157,37 @@ export async function getExamQuestionsById(id) {
     return result.rows;
 }
 
-export async function insertQuestion(question, examId) {
-    const q = `INSERT INTO questions (title, description, exam_id)
-               VALUES ($1, $2, $3) RETURNING *`;
+export async function insertQuestion(question) {
+    const q = `INSERT INTO questions (title, question_id, description, exam_id)
+               VALUES ($1, $2, $3, $4) RETURNING *`;
 
-    const values = [question.title, question.description, examId];
+    const values = [question.title, question.question_id, question.description, question.exam_id];
     const result = await query(q, values);
 
     return result?.rows[0];
+}
+
+export async function getQuestionByIdAndSlug(id, slug) {
+    const result = await query(
+        `SELECT * FROM questions WHERE question_id = $1
+        AND exam_id = (SELECT id FROM exams WHERE slug = $2)`,
+        [id, slug]
+    );
+
+    if (!result) { return null; }
+
+    const question = questionMapper(result.rows[0]);
+    return question;
+}
+
+export async function deleteQuestionByIdAndSlug(id, slug) {
+    const result = await query(
+        `DELETE FROM questions WHERE question_id = $1
+        AND exam_id = (SELECT id FROM exams WHERE slug = $2)`,
+        [id, slug]
+    );
+
+    if (!result) { return null; }
+
+    return result.rowCount ===  1;
 }

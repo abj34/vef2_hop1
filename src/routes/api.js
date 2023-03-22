@@ -4,8 +4,8 @@ import { createUser, findById, findByUsername, updateUser, listUsers } from '../
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listExams, getExam } from './exams.js';
-import { createQuestion } from './questions.js';
+import { listExams, getExam, updateExam, deleteExam } from './exams.js';
+import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
 
 
 export const router = express.Router();
@@ -144,6 +144,11 @@ router.patch(
 router.get('/exams', listExams);
 router.get('/exams/:slug', getExam);
 router.post('/exams/:slug', createQuestion)
+router.patch('/exams/:slug', updateExam);   // Á eftir að útfæra
+router.delete('/exams/:slug', deleteExam);  // Ekki búinn að testa
+
+router.patch('/exams/:slug/:questionId', updateQuestion);   // Á eftir að útfæra
+router.delete('/exams/:slug/:questionId', deleteQuestion);
 
 
 

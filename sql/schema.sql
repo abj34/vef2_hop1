@@ -21,6 +21,7 @@ CREATE TABLE public.exams (
 CREATE TABLE public.questions (
     id SERIAL PRIMARY KEY,
     title VARCHAR(64) NOT NULL UNIQUE,
+    question_id VARCHAR(64) NOT NULL UNIQUE,
     description VARCHAR(1000) DEFAULT '',
     image VARCHAR(256) DEFAULT '',
     exam_id INTEGER NOT NULL REFERENCES public.exams(id) ON DELETE CASCADE,
