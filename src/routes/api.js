@@ -1,6 +1,6 @@
 import express from 'express';
 import { jwtOptions, requireAdmin, tokenOptions } from './passport.js';
-import { createUser, findById, findByUsername, updateUser } from '../lib/users.js';
+import { createUser, findById, findByUsername, updateUser, listUsers } from '../lib/users.js';
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
@@ -96,6 +96,10 @@ async function registerRoute(req, res) {
     return res.status(200).json(result);
   }
 
+  function returnResource(req, res) {
+    return res.json(req.resource);
+  }
+
 // Category routes
 router.get('/', index);
 router.post(
@@ -114,6 +118,24 @@ router.patch(
   '/users/me',
   requireAdmin,
   catchErrors(updateCurrentUserRoute)
+);
+
+router.get(
+  '/users',
+  requireAdmin,
+  catchErrors(listUsers)
+);
+
+router.get(
+  '/users/:id',
+  requireAdmin,
+  returnResource
+);
+
+router.patch(
+  '/users/:id',
+  requireAdmin,
+  catchErrors(updateUser)
 );
 
 /* router.get('/categories', listCategories);

@@ -26,38 +26,6 @@ async function strat(data, next) {
   }
 }
 
-/* export function requireAuthentication(req, res, next) {
-  return passport.authenticate(
-    'jwt',
-    { session: false },
-    (err, user, info) => {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        const error = info.name === 'TokenExpiredError'
-          ? 'expired token' : 'invalid token';
-        return res.status(401).json({ error });
-      }
-      // Látum notanda vera aðgengilegan í rest af middlewares
-      req.user = user;
-      return next();
-    },
-  )(req, res, next);
-} */
-/*
-export function addUserIfAuthenticated(req, res, next) {
-  return passport.authenticate('jwt', { session: false }, (err, user) => {
-    if (err) {
-      return next(err);
-    }
-    if (user) {
-      req.user = user;
-    }
-    return next();
-  })(req, res, next);
-} */
-
 export function requireAdmin(req, res, next) {
   return passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err) {

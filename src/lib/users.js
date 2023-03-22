@@ -124,3 +124,43 @@ export async function updateUser(id, password, email) {
 
   return updatedUser;
 }
+
+export async function listUser(userId) {
+  const user = await query(
+    `
+      SELECT
+        id, username, email, admin, created, updated
+      FROM
+        users
+      WHERE
+        id = $1
+    `,
+    [userId]
+  );
+
+  if (!user) {
+    return null;
+  }
+
+  return user;
+}
+
+export async function listUsers(req, res) {
+  const { offset = 0, limit = 10 } = req.query;
+
+  const users = await query(
+    `SELECT
+        id, username, email, is_admin, created, updated
+      FROM
+        users
+      ORDER BY id ASC`,
+    [],
+    { offset, limit }
+  );
+
+  if (!users) {
+    return null;
+  }
+
+  return res.json(users);
+}
