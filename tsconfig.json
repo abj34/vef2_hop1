@@ -8,6 +8,6 @@
       "moduleResolution": "node",
       "forceConsistentCasingInFileNames": true
     },
-    "include": ["**/*.ts", "src/routes/questions.js"],
+    "include": ["**/*.ts", "src/routes/questions.js", "src/types.js"],
     "exclude": ["node_modules", "**/*.spec.ts"]
 }
