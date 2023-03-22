@@ -1,12 +1,13 @@
-import { slugify } from '../lib/slugify';
-import { Request, Response, NextFunction } from 'express';
+import { slugify } from '../lib/slugify.js';
+//import { Request, Response, NextFunction } from 'express';
 import { 
     getExams,
     getExamBySlug,
     deleteExamBySlug, 
     conditionalUpdate, 
-    insertExam 
-} from '../lib/db';
+    insertExam,
+    getExamQuestionsById
+} from '../lib/db.js';
 
 /**
  * Mappar niðurstöður úr gagnagrunni í exam object
@@ -94,7 +95,7 @@ export async function createExamHandler(req, res, next) {
 
 
 /**
- * "GET /exams/:slug" - Sækir exam með slug
+ * "GET /exams/:slug" - Sækir exam spurningar með id
  * @returns JSON object af exam
  */
 export async function getExam(req, res, next) {
@@ -102,8 +103,11 @@ export async function getExam(req, res, next) {
 
     const exam = await getExamBySlug(slug);
     if (!exam) { return next(); }
+    const questions = await getExamQuestionsById(exam.id);
+    if (!questions) { return next(); }
 
-    return res.json(exam);
+    //return res.json(exam);
+    return res.json(questions);
 }
 
 

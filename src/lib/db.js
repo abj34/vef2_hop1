@@ -147,3 +147,11 @@ export async function deleteExamBySlug(slug) {
 
     return result.rowCount ===  1;
 }
+
+export async function getExamQuestionsById(id) {
+    const result = await query('SELECT * FROM questions WHERE exam_id = $1', [id]);
+
+    if (!result) { return null; }
+
+    return result.rows;
+}
