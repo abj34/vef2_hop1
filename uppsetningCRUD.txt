@@ -25,4 +25,4 @@ GET,POST,PATCH {baseURL}/users/exam/:slug - Taka próf, skila inn svörum (((PAT
 
 GET {baseURL}/ - Fær start síðu, möguleikar um að velja
 
-GET, POST? {baseURL}/exam - Taka próf sem gestur, (((POST ef hægt er að fá niðurstöðu, annars ekki)))
+GET, POST? {baseURL}/exam/:slug - Taka próf sem gestur, (((POST ef hægt er að fá niðurstöðu, annars ekki)))
