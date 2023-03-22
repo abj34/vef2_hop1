@@ -1,9 +1,10 @@
 
 import { query, conditionalUpdate } from './db.js';
 import xss from 'xss';
+import bcrypt from 'bcrypt';
 
 import pkg from 'bcrypt';
-const { bcrypt, bcryptRounds } = pkg;
+const { bcryptRounds } = pkg;
 
 export async function comparePasswords(password, hash) {
   try {
@@ -64,30 +65,23 @@ export async function findById(id) {
   return null;
 }
 
-export async function createUser(
-  name, 
-  username, 
-  password) {
-  // Geymum hashað password!
-  const hashedPassword = await bcrypt.hash(password, 11);
+export async function createUser(username, email, password) {
+  const hashedPassword = await bcrypt.hash(
+    password,
+    parseInt(bcryptRounds, 10)
+  );
 
   const q = `
     INSERT INTO
-      users (name, username, password)
-    VALUES ($1, $2, $3)
-    RETURNING *
-  `;
+      users (username, email, password)
+    VALUES
+      ($1, $2, $3)
+    RETURNING *`;
 
-  try {
-    const result = await query(q, [name, username, hashedPassword]);
-    if(result){
-    return result.rows[0];
-    }
-  } catch (e) {
-    console.error('Gat ekki búið til notanda');
-  }
+  const values = [xss(username), xss(email), hashedPassword];
+  const result = await query(q, values);
 
-  return null;
+  return result.rows[0];
 }
 function isInt(i) {
   return i !== '' && Number.isInteger(Number(i));
