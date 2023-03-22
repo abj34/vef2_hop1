@@ -5,7 +5,8 @@ export function questionMapper(question) {
         !question.id ||
         !question.title ||
         !question.description ||
-        !question.exam_id
+        !question.exam_id ||
+        !question.image
     ) {
         return null
     }
@@ -14,7 +15,8 @@ export function questionMapper(question) {
         id: question.id,
         title: question.title,
         description: question.description || '',
-        exam_id: question.exam_id
+        exam_id: question.exam_id,
+        image: question.image || '',
     };
 
     return theQuestion;
@@ -32,8 +34,9 @@ export const createQuestion = [
     createQuestionHandler,
 ]
 
+// Create a new Question
 export async function createQuestionHandler(req, res, next) {
-    const { title, description } = req.body;
+    const { title, description, image } = req.body;
     const { slug } = req.params;
 
     const exam = await getExamBySlug(slug);
@@ -42,7 +45,8 @@ export async function createQuestionHandler(req, res, next) {
     const questionToCreate = {
         title,
         description: description || '',
-        exam_id: exam.id
+        exam_id: exam.id,
+        image: image || '',
     };
 
     const createdQuestion = await insertQuestion(questionToCreate, exam.id);
