@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
 import { listExams, getExam } from './exams.js';
+import { createQuestion } from './questions.js';
 
 
 export const router = express.Router();
@@ -142,6 +143,8 @@ router.patch(
 //==========================================
 router.get('/exams', listExams);
 router.get('/exams/:slug', getExam);
+router.post('/exams/:slug', createQuestion)
+
 
 
 /* router.get('/categories', listCategories);
