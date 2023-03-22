@@ -1,0 +1,28 @@
+
+GET {baseURL}/admin - leyfir admin að sjá síðurnar sem hann getur farið á
+
+GET,PATCH,DELETE {baseURL}/admin/User - User manipulation???
+
+GET,POST,PATCH,DELETE {baseURL}/admin/exam - Exam manipulation (((/:slug?)))
+
+GET,POST,PATCH,DELETE {baseURL}/admin/question - Question manipulation
+
+-------------------------------
+
+GET {baseURL}/users - Sjá hvaða síður user getur farið inn á
+
+GET,POST {baseURL}/users/registration - Búa til aðgang
+
+GET,POST {baseURL}/users/login - logga inn á aðgang
+
+GET,PATCH {baseURL}/users/user - breyta eigin notenda (((Þarf þetta???)))
+
+GET {baseURL}/users/exam - Sjá öll próf í boði
+
+GET,POST,PATCH {baseURL}/users/exam/:slug - Taka próf, skila inn svörum (((PATCH til að uppfæra stigin hjá manni í score töflu)))
+
+--------------------------------
+
+GET {baseURL}/ - Fær start síðu, möguleikar um að velja
+
+GET, POST? {baseURL}/exam - Taka próf sem gestur, (((POST ef hægt er að fá niðurstöðu, annars ekki)))
