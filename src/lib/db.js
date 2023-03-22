@@ -10,12 +10,11 @@ dotenv.config();
 const { DATABASE_URL: connectionString } = process.env;
 const pool = new pg.Pool({ connectionString });
 
-pool.on('error', (err: Error) => {
+pool.on('error', (err) => {
   console.error('Villa í tengingu við gagnagrunn, forrit hættir', err);
   process.exit(-1);
 });
 
-type QueryInput = string | number | null;
 
 
 /**
@@ -25,7 +24,7 @@ type QueryInput = string | number | null;
  * @param silent ef true, þá prentar ekki út villuskilaboð
  * @returns result af query
  */
-export async function query(q: string, values: Array<QueryInput> = [], silent = false) {
+export async function query(q, values, silent = false) {
     let client;
     try {
         client = await pool.connect();

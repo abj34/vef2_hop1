@@ -1,24 +1,28 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import { router } from './routes/api.js';
+
 
 const app = express();
 
 app.use(express.json());
 app.use(router);
 
-const port = 3000;
+const {
+    PORT: port = 3000,
+  } = process.env;
 
 app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`Server running at http://localhost:${port}/`);
 });
 
-app.use((req: Request, res: Response) => {
+app.use((req, res) => {
     res.status(404).json({ error: 'not found' });
 });
 
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && 'status' in err && 'body' in err) {
         return res.status(400).json({ error: 'invalid json' });
     }
