@@ -147,3 +147,21 @@ export async function deleteExamBySlug(slug) {
 
     return result.rowCount ===  1;
 }
+
+export async function getExamQuestionsById(id) {
+    const result = await query('SELECT * FROM questions WHERE exam_id = $1', [id]);
+
+    if (!result) { return null; }
+
+    return result.rows;
+}
+
+export async function insertQuestion(question, examId) {
+    const q = `INSERT INTO questions (title, description, exam_id)
+               VALUES ($1, $2, $3) RETURNING *`;
+
+    const values = [question.title, question.description, examId];
+    const result = await query(q, values);
+
+    return result?.rows[0];
+}
