@@ -145,8 +145,8 @@ router.get('/exams', listExams);
 router.post('/exams', createExam);
 router.get('/exams/:slug', getExam);
 router.post('/exams/:slug', createQuestion)
-router.patch('/exams/:slug', updateExam);   // Á eftir að útfæra
+router.patch('/exams/:slug', updateExam);
 router.delete('/exams/:slug', deleteExam);
 
-router.patch('/exams/:slug/:questionId', updateQuestion);   // Á eftir að útfæra
+router.patch('/exams/:slug/:questionId', updateQuestion);
 router.delete('/exams/:slug/:questionId', deleteQuestion);

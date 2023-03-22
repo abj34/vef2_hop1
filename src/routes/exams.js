@@ -20,7 +20,8 @@ export function examMapper(exam) {
         !exam.id ||
         !exam.name ||
         !exam.slug ||
-        !exam.description
+        !exam.description ||
+        !exam.image
     ) {
         return null;
     }
@@ -29,7 +30,8 @@ export function examMapper(exam) {
         id: exam.id,
         name: exam.name,
         slug: slugify(exam.name),
-        description: exam.description
+        description: exam.description,
+        image: exam.image,
     };
 
     return theExam;
@@ -131,18 +133,20 @@ export async function updateExamHandler(req, res, next) {
     const exam = await getExamBySlug(slug);
     if (!exam) { return next(); }
 
-    const { name, description } = req.body;
+    const { name, description, image } = req.body;
 
     const fields = [
         typeof name === 'string' && name ? 'name' : null,
         typeof name === 'string' && name ? 'slug' : null,
         typeof description === 'string' && description ? 'description' : null,
+        typeof image === 'string' && image ? 'image' : null,
     ];
 
     const values = [
         typeof name === 'string' && name ? name : null,
         typeof name === 'string' && name ? slugify(name) : null,
         typeof description === 'string' && description ? description : null,
+        typeof image === 'string' && image ? image : null,
     ];
 
     const updated = await conditionalUpdate(

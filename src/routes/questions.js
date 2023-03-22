@@ -72,7 +72,7 @@ export const updateQuestion = [
 ];
 
 export async function updateQuestionHandler(req, res, next) {
-    const { title, description } = req.body;
+    const { title, description, image } = req.body;
     const { slug, questionId } = req.params;
 
     const exam = await getExamBySlug(slug);
@@ -83,14 +83,16 @@ export async function updateQuestionHandler(req, res, next) {
 
     const fields = [
         typeof title === 'string' && title ? 'title' : null,
-        typeof title === 'string' && title ? 'slug' : null,
+        typeof title === 'string' && title ? 'question_id' : null,
         typeof description === 'string' && description ? 'description' : null,
+        typeof image === 'string' && image ? 'image' : null,
     ];
 
     const values = [
         typeof title === 'string' && title ? title : null,
         typeof title === 'string' && title ? slugify(title) : null,
         typeof description === 'string' && description ? description : null,
+        typeof image === 'string' && image ? image : null,
     ];
 
     const updated = await conditionalUpdate(
