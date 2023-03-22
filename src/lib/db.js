@@ -1,6 +1,7 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
+import { examMapper, mapDbExamsToExams } from '../routes/exams.js';
 
 const SCHEMA_FILE = './sql/schema.sql';
 const DROP_SCHEMA_FILE = './sql/drop.sql';
@@ -108,4 +109,41 @@ export async function conditionalUpdate(table, id, fields, values) {
     const result = await query(q, queryValues);
   
     return result;
-  }
+}
+
+
+export async function getExams() {
+    const result = await query('SELECT * FROM exams');
+
+    if (!result) { return null; }
+
+    const exams = mapDbExamsToExams(result);
+    return exams;
+}
+
+export async function insertExam(exam) {
+    const q = 'INSERT INTO exams (name, slug, description) VALUES ($1, $2, $3) RETURNING *';
+
+    const values = [exam.name, exam.slug, exam.description];
+    const result = await query(q, values);
+
+    return result?.rows[0];
+
+}
+
+export async function getExamBySlug(slug) {
+    const result = await query('SELECT * FROM exams WHERE slug = $1', [slug]);
+
+    if (!result) { return null; }
+
+    const exams = examMapper(result.rows[0]);
+    return exams;
+}
+
+export async function deleteExamBySlug(slug) {
+    const result = await query('DELETE FROM exams WHERE slug = $1', [slug]);
+
+    if (!result) { return null; }
+
+    return result.rowCount ===  1;
+}

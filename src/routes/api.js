@@ -12,21 +12,17 @@ export const router = express.Router();
 export async function index(req, res) {
     return res.json([
         {
-            href: '/departments',
+            href: '/exams',
             methods: ['GET', 'POST'],
         },
         {
-            href: '/departments/:slug',
+            href: '/exams/:slug',
             methods: ['GET', 'PATCH', 'DELETE'],
         },
         {
-            href: '/departments/:slug/courses',
+            href: '/exams/:slug/questions',
             methods: ['GET', 'POST'],
-        },
-        {
-            href: '/departments/:slug/courses/:courseId',
-            methods: ['GET', 'PATCH', 'DELETE'],
-        },
+        }
     ]);
 }
 async function registerRoute(req, res) {

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // https://gist.github.com/mathewbyrne/1280286 😊
 
-export function slugify(text: string) {  
+export function slugify(text) {  
     text = text.toString().toLowerCase().trim();
   
     const sets = [
