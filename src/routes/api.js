@@ -145,23 +145,7 @@ router.get('/exams', listExams);
 router.get('/exams/:slug', getExam);
 router.post('/exams/:slug', createQuestion)
 router.patch('/exams/:slug', updateExam);   // Á eftir að útfæra
-router.delete('/exams/:slug', deleteExam);  // Ekki búinn að testa
+router.delete('/exams/:slug', deleteExam);
 
 router.patch('/exams/:slug/:questionId', updateQuestion);   // Á eftir að útfæra
 router.delete('/exams/:slug/:questionId', deleteQuestion);
-
-
-
-/* router.get('/categories', listCategories);
-router.post('/categories', createCategory);
-router.get('/categories/:slug', getCategory);
-router.patch('/categories/:slug', updateCategory);
-router.delete('/categories/:slug', deleteCategory); */
-
-// Question routes
-/*
-router.get('/categories/:slug/courses', listCourses);
-router.post('/categories/:slug/courses', createCourse);
-router.get('/categories/:slug/courses/:courseId', getCourse);
-router.patch('/categories/:slug/courses/:courseId', updateCourse);
-router.delete('/categories/:slug/courses/:courseId', deleteCourse);*/
