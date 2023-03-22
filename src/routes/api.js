@@ -1,9 +1,9 @@
 import express from 'express';
 import { jwtOptions, requireAdmin, tokenOptions } from './passport.js';
-import { createUser, findById, findByUsername, updateUser } from './users.js';
+import { createUser, findById, findByUsername, updateUser } from '../lib/users.js';
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
-import { catchErrors } from '../lib/catchErrors.js';
+import { catchErrors } from '../lib/catch-errors.js';
 
 
 export const router = express.Router();

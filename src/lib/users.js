@@ -1,5 +1,9 @@
-import bcrypt from 'bcrypt';
-import { query } from './db.js';
+
+import { query, conditionalUpdate } from './db.js';
+import xss from 'xss';
+
+import pkg from 'bcrypt';
+const { bcrypt, bcryptRounds } = pkg;
 
 export async function comparePasswords(password, hash) {
   try {
@@ -84,4 +88,45 @@ export async function createUser(
   }
 
   return null;
+}
+function isInt(i) {
+  return i !== '' && Number.isInteger(Number(i));
+}
+
+// TODO move to utils
+function isString(s) {
+  return typeof s === 'string';
+}
+
+export async function updateUser(id, password, email) {
+  if (!isInt(id)) {
+    return null;
+  }
+
+  const fields = [
+    isString(password) ? 'password' : null,
+    isString(email) ? 'email' : null,
+  ];
+
+  let hashedPassword = null;
+
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, parseInt(bcryptRounds, 10));
+  }
+
+  const values = [hashedPassword, isString(email) ? xss(email) : null];
+
+  fields.push('updated');
+  values.push(new Date());
+
+  const result = await conditionalUpdate('users', id, fields, values);
+
+  if (!result) {
+    return null;
+  }
+
+  const updatedUser = result.rows[0];
+  delete updatedUser.password;
+
+  return updatedUser;
 }
