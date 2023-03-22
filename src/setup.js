@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import { dropSchema, createSchema, query, end} from '../lib/db.js';
+import { dropSchema, createSchema, query, end} from './lib/db.js';
 import dotenv from 'dotenv';
 
 dotenv.config();

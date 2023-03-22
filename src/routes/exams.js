@@ -1,12 +1,11 @@
-import { slugify } from '../lib/slugify';
-import { Request, Response, NextFunction } from 'express';
+import { slugify } from '../lib/slugify.js';
 import { 
     getExams,
     getExamBySlug,
     deleteExamBySlug, 
     conditionalUpdate, 
     insertExam 
-} from '../lib/db';
+} from '../lib/db.js';
 
 /**
  * Mappar niðurstöður úr gagnagrunni í exam object
