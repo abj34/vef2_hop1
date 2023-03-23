@@ -6,6 +6,11 @@ import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
 import { listExams, getExam, updateExam, deleteExam, createExam } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
+import { 
+  usernameValidator, 
+  emailValidator, 
+  passwordValidator, 
+  validationCheck } from '../lib/validation.js';
 
 
 export const router = express.Router();
@@ -102,11 +107,18 @@ async function registerRoute(req, res) {
 router.get('/', index);
 router.post(
   '/users/register',
+  usernameValidator,
+  emailValidator,
+  passwordValidator,
+  validationCheck,
   catchErrors(registerRoute)
 );
 
 router.post(
   '/users/login',
+  usernameValidator,
+  passwordValidator,
+  validationCheck,
   catchErrors(loginRoute)
 );
 
@@ -132,6 +144,9 @@ router.get(
 
 router.patch(
   '/users/:id',
+  usernameValidator,
+  emailValidator,
+  passwordValidator,
   requireAdmin,
   catchErrors(updateUser)
 );

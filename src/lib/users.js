@@ -81,7 +81,12 @@ export async function createUser(username, email, password) {
   const values = [xss(username), xss(email), hashedPassword];
   const result = await query(q, values);
 
-  return result.rows[0];
+  if(result){
+    return result.rows[0];
+  }
+  else{
+    return 'error';
+  }
 }
 function isInt(i) {
   return i !== '' && Number.isInteger(Number(i));
