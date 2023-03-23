@@ -83,9 +83,13 @@ export async function createUser(username, email, password) {
 
   insertUserIntoScores(result.rows[0].id);
 
-  return result.rows[0];
+  if(result){
+    return result.rows[0];
+  }
+  else{
+    return 'error';
+  }
 }
-
 function isInt(i) {
   return i !== '' && Number.isInteger(Number(i));
 }
