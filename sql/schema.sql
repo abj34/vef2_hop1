@@ -42,5 +42,8 @@ CREATE TABLE public.answers (
 
 CREATE TABLE public.scores (
     id SERIAL PRIMARY KEY,
-    score INTEGER NOT NULL
+    player_id INTEGER NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    exam_1 INTEGER DEFAULT NULL,
+    exam_2 INTEGER DEFAULT NULL,
+    exam_3 INTEGER DEFAULT NULL
 );
