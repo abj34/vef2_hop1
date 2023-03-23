@@ -196,6 +196,9 @@ export async function getExamResults(req, res, next) {
     const { slug } = req.params;
     const guesses = req.body;
 
+    const exam = await getExamBySlug(slug);
+    if (!exam) { return next(); }
+
     for (const guess of guesses) {
 
         const result = await getCorrectAnswerToQuestion(slug, guess.guess_id, guess.guess);
@@ -208,6 +211,17 @@ export async function getExamResults(req, res, next) {
 
     const finalScore = scores.currentScore;
     scores.currentScore = 0;
+
+    // FIX THE UPDATER WITH ADDING USER
+    /*
+    const highscore = await getHighScoreForUser(exam.id, user.id);
+
+    if (finalScore > highscore.highscore) {
+        // UpdateHandler eða sér scores update?
+    }
+
+    
+    */
 
     return res.json(finalScore);
 
@@ -247,13 +261,4 @@ export async function highscoreReceiver(req, res, next) {
     }
 
     return res.json(result);
-}
-
-export async function updateScore(req, res, next) {
-    const { slug } = req.params;
-
-    const exam = await getExamBySlug(slug);
-    if (!exam) { return next(); }
-
-    
 }

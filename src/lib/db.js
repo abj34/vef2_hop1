@@ -282,7 +282,7 @@ export async function getScoreboardFromExamId(id) {
 // Get users score in exam
 export async function getHighScoreForUser(exam_id, user_id) {
     const value = 'exam_' + exam_id;
-    const q = 'SELECT ' + value + ' FROM scores WHERE player_id = $1;'
+    const q = 'SELECT ' + value + ' AS highscore FROM scores WHERE player_id = $1;'
 
     const result = await query(q, [user_id]);
 
