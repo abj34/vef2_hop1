@@ -31,7 +31,7 @@ export const genericSanitizerMany = (params) =>
 
   export const usernameValidator = body('username')
   .isLength({ min: 1, max: 64 })
-  .withMessage('username is required, max 64 characters');
+  .withMessage('notendanafn rangt, hámarki 64 stafir');
 
   const isPatchingAllowAsOptional = (value, { req }) => {
     if (!value && req.method === 'PATCH') {
@@ -45,9 +45,9 @@ export const genericSanitizerMany = (params) =>
   .if(isPatchingAllowAsOptional)
   .isLength({ min: 1, max: 64 })
   .isEmail()
-  .withMessage('email is required, max 64 characters');
+  .withMessage('email rangt, hámarki 64 stafir');
 
 export const passwordValidator = body('password')
   .if(isPatchingAllowAsOptional)
   .isLength({ min: 8, max: 1128 })
-  .withMessage('password is required, min 8 characters, max 128 characters');
+  .withMessage('lykilorð rangt,lágmarki 8 stafir, hámarki 64 stafir');
