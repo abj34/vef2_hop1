@@ -181,3 +181,13 @@ export async function deleteExam(req, res, next) {
 
     return res.status(204).send();
 }
+
+
+export async function getExamResults(req, res, next) {
+    const { slug } = req.params;
+
+    const exam = await getExamBySlug(slug);
+    if (!exam) { return next(); }
+
+    
+}

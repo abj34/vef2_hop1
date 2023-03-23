@@ -151,7 +151,9 @@ export async function deleteExamBySlug(slug) {
 }
 
 export async function getExamQuestionsById(id) {
-    const result = await query('SELECT * FROM questions WHERE exam_id = $1', [id]);
+    const result = await query(`SELECT q.*, a.*
+    FROM public.questions q
+    LEFT JOIN public.answers a ON q.id = a.question_id WHERE exam_id = $1`, [id]);
 
     if (!result) { return null; }
 

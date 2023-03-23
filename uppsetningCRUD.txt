@@ -17,9 +17,9 @@ GET,POST {baseURL}/users/login - logga inn á aðgang
 
 GET,PATCH {baseURL}/users/user - breyta eigin notenda (((Þarf þetta???)))
 
-GET {baseURL}/users/exam - Sjá öll próf í boði
+GET {baseURL}/exam - Sjá öll próf í boði
 
-GET,POST,PATCH {baseURL}/users/exam/:slug - Taka próf, skila inn svörum (((PATCH til að uppfæra stigin hjá manni í score töflu)))
+GET,POST,PATCH {baseURL}/exam/:slug - Taka próf, skila inn svörum (((PATCH til að uppfæra stigin hjá manni í score töflu)))
 
 --------------------------------
 

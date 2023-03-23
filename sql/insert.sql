@@ -17,6 +17,12 @@ INSERT INTO questions (title, question_id, description, exam_id) VALUES ('Questi
 INSERT INTO questions (title, question_id, description, exam_id) VALUES ('Question 3.2', 'question-3-2', 'This is the second question in the third exam', 3);
 INSERT INTO questions (title, question_id, description, exam_id) VALUES ('Question 3.3', 'question-3-3', 'This is the third question in the third exam', 3);
 
-
-INSERT INTO answers (question_id, answer, fake_answer_1, fake_answer_2, fake_answer_3) VALUES (1, 'answer', 'wrong', 'false', 'uh-uh');
-INSERT INTO answers (question_id, answer, fake_answer_1, fake_answer_2, fake_answer_3) VALUES (2, 'itstrue', 'wrong', 'not-right', 'fake');
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 1);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 2);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 3);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 4);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 5);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 6);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 7);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 8);
+INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 9);
