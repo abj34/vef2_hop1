@@ -43,3 +43,19 @@ export async function listImages() {
 export async function uploadImage(filepath) {
   return uploadAsync(filepath);
 }
+
+export async function imageHandler(req, res, next) {
+  const { image } = req.body;
+
+  if (!image) {
+    return next(new Error('Missing image'));
+  }
+
+  const imageUrl = await uploadImage(image);
+
+  if (!imageUrl) {
+    return next(new Error('Unable to upload image'));
+  }
+
+  return res.json(imageUrl);
+}

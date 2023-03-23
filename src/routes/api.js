@@ -4,8 +4,9 @@ import { createUser, findById, findByUsername, updateUser, listUsers } from '../
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listExams, getExam, updateExam, deleteExam, createExam, getExamResults, getScoreboard } from './exams.js';
+import { listExams, getExam, updateExam, deleteExam, createExam, getExamResults, getScoreboard, highscoreReceiver } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
+import { imageHandler } from '../lib/cloudinary.js';
 
 
 export const router = express.Router();
@@ -154,6 +155,6 @@ router.delete('/exams/:slug/:questionId', deleteQuestion);
 
 router.post('/exams/:slug/results', getExamResults);
 router.get('/exams/:slug/scoreboard', getScoreboard);
-router.post('/testing', );
-
+router.post('/exams/:slug/testing', highscoreReceiver);
+router.post('/photo', imageHandler);
 

@@ -10,9 +10,9 @@ import {
     getCorrectAnswerToQuestion,
     getScoreboardFromExamId,
     insertUserIntoScores,
-    createScoreColumnbyExamId
+    createScoreColumnbyExamId,
+    getHighScoreForUser
 } from '../lib/db.js';
-import { findByUsername } from '../lib/users.js';
 
 export const scores = { currentScore: 0, highestScore: 0 };
 
@@ -101,7 +101,7 @@ export async function createExamHandler(req, res, next) {
     }
 
     createScoreColumnbyExamId(createdExam.id);
-    
+
     return res.json(createdExam);
 }
 
@@ -232,24 +232,28 @@ export async function getScoreboard(req, res, next) {
 
 /// ADD TO OTHER FUNCTIONS
 
-export async function createNewScoreColumn(req, res, next) {
-    return false;
-}
-
-export async function addUserToScores(req, res, next) {
+// TODO: Taka á móti user_id
+export async function highscoreReceiver(req, res, next) {
     const { slug } = req.params;
 
-    const user = await findByUsername(slug);
-    if (!user) {
-        return next(new Error('Unable to find user'));
-    }
+    const exam = await getExamBySlug(slug);
+    if (!exam) { return next(); }
 
-    const userId = user.id;
+    const result = await getHighScoreForUser(exam.id, 1);
+    console.log(result);
 
-    const result = await insertUserIntoScores(userId);
     if (!result) {
-        return next(new Error('Unable to add user to scores'));
+        return next(new Error('Unable to get highscore'));
     }
 
     return res.json(result);
+}
+
+export async function updateScore(req, res, next) {
+    const { slug } = req.params;
+
+    const exam = await getExamBySlug(slug);
+    if (!exam) { return next(); }
+
+    
 }
