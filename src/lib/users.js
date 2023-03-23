@@ -1,5 +1,5 @@
 
-import { query, conditionalUpdate } from './db.js';
+import { query, conditionalUpdate, insertUserIntoScores } from './db.js';
 import xss from 'xss';
 import bcrypt from 'bcrypt';
 
@@ -81,8 +81,11 @@ export async function createUser(username, email, password) {
   const values = [xss(username), xss(email), hashedPassword];
   const result = await query(q, values);
 
+  insertUserIntoScores(result.rows[0].id);
+
   return result.rows[0];
 }
+
 function isInt(i) {
   return i !== '' && Number.isInteger(Number(i));
 }

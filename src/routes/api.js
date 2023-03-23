@@ -4,7 +4,7 @@ import { createUser, findById, findByUsername, updateUser, listUsers } from '../
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listExams, getExam, updateExam, deleteExam, createExam, getExamResults } from './exams.js';
+import { listExams, getExam, updateExam, deleteExam, createExam, getExamResults, getScoreboard } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
 
 
@@ -152,4 +152,8 @@ router.patch('/exams/:slug/:questionId', updateQuestion);
 router.delete('/exams/:slug/:questionId', deleteQuestion);
 
 
-router.post('exams/:slug/results', getExamResults);
+router.post('/exams/:slug/results', getExamResults);
+router.get('/exams/:slug/scoreboard', getScoreboard);
+router.post('/testing', );
+
+

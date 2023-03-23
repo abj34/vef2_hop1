@@ -26,3 +26,5 @@ INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, quest
 INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 7);
 INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 8);
 INSERT INTO answers ( answer, fake_answer_1, fake_answer_2, fake_answer_3, question_id ) VALUES ('answer', 'fake', 'fake', 'fake', 9);
+
+INSERT INTO scores ( player_id ) VALUES (1)

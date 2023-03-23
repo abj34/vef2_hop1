@@ -6,8 +6,15 @@ import {
     deleteExamBySlug, 
     conditionalUpdate, 
     insertExam,
-    getExamQuestionsById
+    getExamQuestionsById,
+    getCorrectAnswerToQuestion,
+    getScoreboardFromExamId,
+    insertUserIntoScores,
+    createScoreColumnbyExamId
 } from '../lib/db.js';
+import { findByUsername } from '../lib/users.js';
+
+export const scores = { currentScore: 0, highestScore: 0 };
 
 /**
  * Mappar niðurstöður úr gagnagrunni í exam object
@@ -93,6 +100,8 @@ export async function createExamHandler(req, res, next) {
         return next(new Error('Unable to create exam'));
     }
 
+    createScoreColumnbyExamId(createdExam.id);
+    
     return res.json(createdExam);
 }
 
@@ -185,9 +194,62 @@ export async function deleteExam(req, res, next) {
 
 export async function getExamResults(req, res, next) {
     const { slug } = req.params;
+    const guesses = req.body;
 
+    for (const guess of guesses) {
+
+        const result = await getCorrectAnswerToQuestion(slug, guess.guess_id, guess.guess);
+
+        if (result) {
+            scores.currentScore += 1;
+        }
+
+    }
+
+    const finalScore = scores.currentScore;
+    scores.currentScore = 0;
+
+    return res.json(finalScore);
+
+}
+
+export async function getScoreboard(req, res, next) {
+    const { slug } = req.params;
+    
     const exam = await getExamBySlug(slug);
     if (!exam) { return next(); }
 
-    
+    const result = await getScoreboardFromExamId(exam.id);
+
+    if (!result) {
+        return next(new Error('Unable to get scoreboard'));
+    }
+
+    return res.json(result);
+}
+
+
+
+/// ADD TO OTHER FUNCTIONS
+
+export async function createNewScoreColumn(req, res, next) {
+    return false;
+}
+
+export async function addUserToScores(req, res, next) {
+    const { slug } = req.params;
+
+    const user = await findByUsername(slug);
+    if (!user) {
+        return next(new Error('Unable to find user'));
+    }
+
+    const userId = user.id;
+
+    const result = await insertUserIntoScores(userId);
+    if (!result) {
+        return next(new Error('Unable to add user to scores'));
+    }
+
+    return res.json(result);
 }
