@@ -309,3 +309,16 @@ export async function insertNewHighScore(user_id, score, exam_id) {
   
     return result.rows[0];
   }
+
+  export async function deleteFromScores(examid){
+    const value = 'exam_' + examid;
+    const q = `ALTER TABLE scores DROP COLUMN ${value}`;
+
+    const result = await query(q);
+  
+    if (!result) {
+      return null;
+    }
+  
+    return result.rows[0];
+  }

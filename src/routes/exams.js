@@ -9,10 +9,10 @@ import {
     getExamQuestionsById,
     getCorrectAnswerToQuestion,
     getScoreboardFromExamId,
-    insertUserIntoScores,
     createScoreColumnbyExamId,
     getHighScoreForUser,
-    insertNewHighScore
+    insertNewHighScore,
+    deleteFromScores
 } from '../lib/db.js';
 
 export const scores = { currentScore: 0, highestScore: 0 };
@@ -188,6 +188,7 @@ export async function deleteExam(req, res, next) {
     if (!deleted) {
         return next(new Error('Unable to delete exam'));
     }
+    const deletedScore = await deleteFromScores(exam.id);
 
     return res.status(204).send();
 }
@@ -218,7 +219,7 @@ export async function getExamResults(req, res, next) {
     
         // Save user's score to database
         const highscore = await getHighScoreForUser(exam.id, userid);
-        console.log(highscore)
+        
         if (finalScore > highscore.highscore) {
             highscore.highscore= finalScore;
             saveScore(req.user.id, finalScore, exam.id);
