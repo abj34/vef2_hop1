@@ -39,7 +39,7 @@ export function requireAdmin(req, res, next) {
       return res.status(401).json({ error });
     }
 
-    if (!user.admin) {
+    if (!user.is_admin) {
       const error = 'insufficient authorization';
       return res.status(401).json({ error });
     }

@@ -11,7 +11,8 @@ import {
     getScoreboardFromExamId,
     createScoreColumnbyExamId,
     getHighScoreForUser,
-    insertNewHighScore
+    insertNewHighScore,
+    deleteFromScores
 } from '../lib/db.js';
 
 export const scores = { currentScore: 0, highestScore: 0 };
@@ -185,6 +186,10 @@ export async function deleteExam(req, res, next) {
 
     const deleted = await deleteExamBySlug(slug);
     if (!deleted) {
+        return next(new Error('Unable to delete exam'));
+    }
+    const deletedScore = await deleteFromScores(exam.id);
+    if (!deletedScore) {
         return next(new Error('Unable to delete exam'));
     }
 

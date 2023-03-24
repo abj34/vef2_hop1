@@ -44,7 +44,14 @@ export const createQuestion = [
 
 // Create a new Question
 export async function createQuestionHandler(req, res, next) {
-    const { title, description, image } = req.body;
+    const { 
+        title, 
+        description, 
+        image, 
+        answer, 
+        fake_answer_1, 
+        fake_answer_2,
+        fake_answer_3 } = req.body;
     const { slug } = req.params;
 
     const exam = await getExamBySlug(slug);
@@ -55,7 +62,11 @@ export async function createQuestionHandler(req, res, next) {
         description: description || '',
         exam_id: exam.id,
         image: image || '',
-        question_id: slugify(title)
+        question_id: slugify(title),
+        answer: answer,
+        fake_answer_1: fake_answer_1,
+        fake_answer_2: fake_answer_2,
+        fake_answer_3: fake_answer_3
     };
 
     const createdQuestion = await insertQuestion(questionToCreate);

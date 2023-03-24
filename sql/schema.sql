@@ -22,7 +22,7 @@ CREATE TABLE public.questions (
     id SERIAL PRIMARY KEY,
     title VARCHAR(64) NOT NULL UNIQUE,
     question_id VARCHAR(64) NOT NULL UNIQUE,
-    description VARCHAR(1000) DEFAULT '',
+    description VARCHAR(256) DEFAULT '',
     image VARCHAR(256) DEFAULT '',
     answer VARCHAR(256) NOT NULL,
     fake_answer_1 VARCHAR(256) NOT NULL,
