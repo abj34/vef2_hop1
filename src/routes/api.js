@@ -11,8 +11,7 @@ import {
   deleteExam, 
   createExam, 
   getExamResults, 
-  getScoreboard, 
-  highscoreReceiver } from './exams.js';
+  getScoreboard } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
 import { 
   usernameValidator, 
@@ -178,6 +177,4 @@ router.delete('/exams/:slug/:questionId', deleteQuestion);
 
 router.post('/exams/:slug/results', requireUser, getExamResults);
 router.get('/exams/:slug/scoreboard', getScoreboard);
-router.post('/exams/:slug/testing', highscoreReceiver);
 router.post('/photo', imageHandler);
-

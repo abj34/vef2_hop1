@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS public.questions CASCADE;
 DROP TABLE IF EXISTS public.exams CASCADE;
-DROP TABLE IF EXISTS public.answers CASCADE;
 DROP TABLE IF EXISTS public.scores CASCADE;
 DROP TABLE IF EXISTS public.users;

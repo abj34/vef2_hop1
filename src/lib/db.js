@@ -163,9 +163,13 @@ export async function deleteExamBySlug(slug) {
 
 
 export async function getExamQuestionsById(id) {
-    const result = await query(`SELECT q.*, a.*
-    FROM public.questions q
-    LEFT JOIN public.answers a ON q.id = a.question_id WHERE exam_id = $1`, [id]);
+    const q = `SELECT id, title, question_id, description, image, 
+        answer AS choice1, fake_answer_1 AS choice2, 
+        fake_answer_2 AS choice3, fake_answer_3 AS choice4,
+        exam_id, created, updated
+        FROM questions WHERE exam_id = $1`;
+
+    const result = await query(q, [id]);
 
     if (!result) { return null; }
 
@@ -211,14 +215,11 @@ export async function deleteQuestionByIdAndSlug(id, slug) {
 ////// SCORE MANAGEMENT //////
 
 // How many guesses are correct
-export async function getCorrectAnswerToQuestion(slug, guess_id, guess) {
-    const q = `SELECT answer FROM answers
-	WHERE question_id = (SELECT id FROM questions
-		WHERE exam_id = (SELECT id FROM exams
-			WHERE slug=$1)
-		AND question_id = $2)`
+export async function getCorrectAnswerToQuestion(exam_id, guess_id, guess) {
+    const q = `SELECT answer FROM questions
+    WHERE exam_id = $1 AND question_id = $2`
 
-    const values = [slug, guess_id];
+    const values = [exam_id, guess_id];
     const result = await query(q, values);
 
     if (!result || result.rows[0] === undefined) { return null; }
@@ -294,11 +295,10 @@ export async function getHighScoreForUser(exam_id, user_id) {
 export async function insertNewHighScore(user_id, score, exam_id) {
     const value = 'exam_' + exam_id;
     const q = `
-      INSERT INTO scores (player_id, ${value})
-      VALUES ($1, $2)
-      ON CONFLICT (player_id)
-      DO UPDATE SET ${value} = GREATEST(scores.${value}, $2)
-      RETURNING *
+        UPDATE scores
+        SET ${value} = $2
+        WHERE player_id = $1
+        RETURNING *
     `;
   
     const result = await query(q, [user_id, score]);

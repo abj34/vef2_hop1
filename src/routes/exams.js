@@ -9,7 +9,6 @@ import {
     getExamQuestionsById,
     getCorrectAnswerToQuestion,
     getScoreboardFromExamId,
-    insertUserIntoScores,
     createScoreColumnbyExamId,
     getHighScoreForUser,
     insertNewHighScore
@@ -202,7 +201,7 @@ export async function getExamResults(req, res, next) {
 
     for (const guess of guesses) {
 
-        const result = await getCorrectAnswerToQuestion(slug, guess.guess_id, guess.guess);
+        const result = await getCorrectAnswerToQuestion(exam.id, guess.guess_id, guess.guess);
 
         if (result) {
             scores.currentScore += 1;
@@ -218,7 +217,7 @@ export async function getExamResults(req, res, next) {
     
         // Save user's score to database
         const highscore = await getHighScoreForUser(exam.id, userid);
-        console.log(highscore)
+        
         if (finalScore > highscore.highscore) {
             highscore.highscore= finalScore;
             saveScore(req.user.id, finalScore, exam.id);
@@ -259,19 +258,3 @@ export async function getScoreboard(req, res, next) {
 
 
 /// ADD TO OTHER FUNCTIONS
-
-// TODO: Taka á móti user_id
-export async function highscoreReceiver(req, res, next) {
-    const { slug } = req.params;
-
-    const exam = await getExamBySlug(slug);
-    if (!exam) { return next(); }
-
-    const result = await getHighScoreForUser(exam.id, 1);
-
-    if (!result) {
-        return next(new Error('Unable to get highscore'));
-    }
-
-    return res.json(result);
-}

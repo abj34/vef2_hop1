@@ -72,7 +72,15 @@ export const updateQuestion = [
 ];
 
 export async function updateQuestionHandler(req, res, next) {
-    const { title, description, image } = req.body;
+    const { 
+        title, 
+        description, 
+        image, 
+        answer, 
+        fake_answer_1, 
+        fake_answer_2, 
+        fake_answer_3 
+    } = req.body;
     const { slug, questionId } = req.params;
 
     const exam = await getExamBySlug(slug);
@@ -86,6 +94,10 @@ export async function updateQuestionHandler(req, res, next) {
         typeof title === 'string' && title ? 'question_id' : null,
         typeof description === 'string' && description ? 'description' : null,
         typeof image === 'string' && image ? 'image' : null,
+        typeof answer === 'string' && answer ? 'answer' : null,
+        typeof fake_answer_1 === 'string' && fake_answer_1 ? 'fake_answer_1' : null,
+        typeof fake_answer_2 === 'string' && fake_answer_2 ? 'fake_answer_2' : null,
+        typeof fake_answer_3 === 'string' && fake_answer_3 ? 'fake_answer_3' : null,
     ];
 
     const values = [
@@ -93,6 +105,10 @@ export async function updateQuestionHandler(req, res, next) {
         typeof title === 'string' && title ? slugify(title) : null,
         typeof description === 'string' && description ? description : null,
         typeof image === 'string' && image ? image : null,
+        typeof answer === 'string' && answer ? answer : null,
+        typeof fake_answer_1 === 'string' && fake_answer_1 ? fake_answer_1 : null,
+        typeof fake_answer_2 === 'string' && fake_answer_2 ? fake_answer_2 : null,
+        typeof fake_answer_3 === 'string' && fake_answer_3 ? fake_answer_3 : null,
     ];
 
     const updated = await conditionalUpdate(
