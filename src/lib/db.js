@@ -290,3 +290,22 @@ export async function getHighScoreForUser(exam_id, user_id) {
 
     return result.rows[0];
 }
+
+export async function insertNewHighScore(user_id, score, exam_id) {
+    const value = 'exam_' + exam_id;
+    const q = `
+      INSERT INTO scores (player_id, ${value})
+      VALUES ($1, $2)
+      ON CONFLICT (player_id)
+      DO UPDATE SET ${value} = GREATEST(scores.${value}, $2)
+      RETURNING *
+    `;
+  
+    const result = await query(q, [user_id, score]);
+  
+    if (!result) {
+      return null;
+    }
+  
+    return result.rows[0];
+  }

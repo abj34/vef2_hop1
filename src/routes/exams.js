@@ -11,7 +11,8 @@ import {
     getScoreboardFromExamId,
     insertUserIntoScores,
     createScoreColumnbyExamId,
-    getHighScoreForUser
+    getHighScoreForUser,
+    insertNewHighScore
 } from '../lib/db.js';
 
 export const scores = { currentScore: 0, highestScore: 0 };
@@ -213,32 +214,32 @@ export async function getExamResults(req, res, next) {
     scores.currentScore = 0;
     if (req.user) {
         const username = req.user.username;
+        const userid = req.user.id;
     
         // Save user's score to database
+        const highscore = await getHighScoreForUser(exam.id, userid);
+        console.log(highscore)
+        if (finalScore > highscore.highscore) {
+            highscore.highscore= finalScore;
+            saveScore(req.user.id, finalScore, exam.id);
+        }
+        const highestScore= highscore.highscore
     
-        saveScore(username, finalScore);
+       
     
-        return res.json({ username, finalScore });
+        return res.json({ username, finalScore, highestScore });
       } else {
     
         return res.json({ finalScore, message: 'Log in to save score' });
       }
-
-    // FIX THE UPDATER WITH ADDING USER
-    /*
-    const highscore = await getHighScoreForUser(exam.id, user.id);
-
-    if (finalScore > highscore.highscore) {
-        // UpdateHandler eða sér scores update?
-    }
-
-    
-    */
-
 }
-function saveScore(username, score) {
+
+function saveScore(userid, score, exam_id ) {
     // Save score to database here
+    insertNewHighScore(userid, score, exam_id)
+    
   }
+
 
 export async function getScoreboard(req, res, next) {
     const { slug } = req.params;
