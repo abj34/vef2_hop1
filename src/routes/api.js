@@ -1,10 +1,18 @@
 import express from 'express';
-import { jwtOptions, requireAdmin, tokenOptions } from './passport.js';
+import { jwtOptions, requireAdmin, requireUser, tokenOptions } from './passport.js';
 import { createUser, findById, findByUsername, updateUser, listUsers } from '../lib/users.js';
 import jwt from 'jsonwebtoken';
 import { logger } from '../lib/logger.js';
 import { catchErrors } from '../lib/catch-errors.js';
-import { listExams, getExam, updateExam, deleteExam, createExam, getExamResults, getScoreboard, highscoreReceiver } from './exams.js';
+import { 
+  listExams, 
+  getExam, 
+  updateExam, 
+  deleteExam, 
+  createExam, 
+  getExamResults, 
+  getScoreboard, 
+  highscoreReceiver } from './exams.js';
 import { createQuestion, updateQuestion, deleteQuestion } from './questions.js';
 import { 
   usernameValidator, 
@@ -168,7 +176,7 @@ router.patch('/exams/:slug/:questionId', updateQuestion);
 router.delete('/exams/:slug/:questionId', deleteQuestion);
 
 
-router.post('/exams/:slug/results', getExamResults);
+router.post('/exams/:slug/results', requireUser, getExamResults);
 router.get('/exams/:slug/scoreboard', getScoreboard);
 router.post('/exams/:slug/testing', highscoreReceiver);
 router.post('/photo', imageHandler);

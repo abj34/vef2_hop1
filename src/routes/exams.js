@@ -211,6 +211,18 @@ export async function getExamResults(req, res, next) {
 
     const finalScore = scores.currentScore;
     scores.currentScore = 0;
+    if (req.user) {
+        const username = req.user.username;
+    
+        // Save user's score to database
+    
+        saveScore(username, finalScore);
+    
+        return res.json({ username, finalScore });
+      } else {
+    
+        return res.json({ finalScore, message: 'Log in to save score' });
+      }
 
     // FIX THE UPDATER WITH ADDING USER
     /*
@@ -223,9 +235,10 @@ export async function getExamResults(req, res, next) {
     
     */
 
-    return res.json(finalScore);
-
 }
+function saveScore(username, score) {
+    // Save score to database here
+  }
 
 export async function getScoreboard(req, res, next) {
     const { slug } = req.params;
@@ -254,7 +267,6 @@ export async function highscoreReceiver(req, res, next) {
     if (!exam) { return next(); }
 
     const result = await getHighScoreForUser(exam.id, 1);
-    console.log(result);
 
     if (!result) {
         return next(new Error('Unable to get highscore'));

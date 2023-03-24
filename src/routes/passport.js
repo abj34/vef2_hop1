@@ -50,6 +50,20 @@ export function requireAdmin(req, res, next) {
   })(req, res, next);
 }
 
+export function requireUser(req, res, next) {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (user) {
+      req.user = user;
+    }
+
+    next();
+  })(req, res, next);
+}
+
 export const tokenOptions = { expiresIn: parseInt(tokenLifetime, 10) };
 
 export const jwtOptions = {
