@@ -22,7 +22,7 @@ CREATE TABLE public.questions (
     id SERIAL PRIMARY KEY,
     title VARCHAR(64) NOT NULL UNIQUE,
     question_id VARCHAR(64) NOT NULL UNIQUE,
-    description VARCHAR(1000) DEFAULT '',
+    description VARCHAR(256) DEFAULT '',
     image VARCHAR(256) DEFAULT '',
     exam_id INTEGER NOT NULL REFERENCES public.exams(id) ON DELETE CASCADE,
     created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -32,10 +32,10 @@ CREATE TABLE public.questions (
 CREATE TABLE public.answers (
     id SERIAL PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES public.questions(id) ON DELETE CASCADE,
-    answer VARCHAR(1000) NOT NULL,
-    fake_answer_1 VARCHAR(1000) NOT NULL,
-    fake_answer_2 VARCHAR(1000) NOT NULL,
-    fake_answer_3 VARCHAR(1000) NOT NULL,
+    answer VARCHAR(256) NOT NULL,
+    fake_answer_1 VARCHAR(256) NOT NULL,
+    fake_answer_2 VARCHAR(256) NOT NULL,
+    fake_answer_3 VARCHAR(256) NOT NULL,
     created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

@@ -49,5 +49,37 @@ export const genericSanitizerMany = (params) =>
 
 export const passwordValidator = body('password')
   .if(isPatchingAllowAsOptional)
-  .isLength({ min: 8, max: 1128 })
+  .isLength({ min: 8, max: 64 })
   .withMessage('lykilorð rangt,lágmarki 8 stafir, hámarki 64 stafir');
+
+  export const nameValidator = body('name')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('nafn rangt, hámarki 64 stafir');
+
+  export const descriptionValidator = body('description')
+  .isLength({ min: 1, max: 256 })
+  .withMessage('lýsing röng, hámarki 256 stafir');
+
+  export const titleValidator = body('title')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('titill rangur, hámarki 64 stafir');  
+
+  
+  export const answerValidator = body('answer')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('svar rangur, hámarki 64 stafir');  
+
+  export const fakeanswer1Validator = body('fake_answer_1')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('svar rangur, hámarki 64 stafir');  
+
+  export const fakeanswer2Validator = body('fake_answer_2')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('svar rangur, hámarki 64 stafir');  
+
+  export const fakeanswer3Validator = body('fake_answer_3')
+  .isLength({ min: 1, max: 64 })
+  .withMessage('svar rangur, hámarki 64 stafir');  
+
+
+

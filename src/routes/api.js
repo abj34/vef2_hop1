@@ -18,7 +18,14 @@ import {
   usernameValidator, 
   emailValidator, 
   passwordValidator, 
-  validationCheck } from '../lib/validation.js';
+  validationCheck, 
+  nameValidator,
+  descriptionValidator,
+  titleValidator,
+  answerValidator,
+  fakeanswer1Validator,
+  fakeanswer2Validator,
+  fakeanswer3Validator} from '../lib/validation.js';
 import { imageHandler } from '../lib/cloudinary.js';
 
 
@@ -160,20 +167,44 @@ router.patch(
   catchErrors(updateUser)
 );
 
-
-
-
-
 //==========================================
 router.get('/exams', listExams);
-router.post('/exams', createExam);
-router.get('/exams/:slug', getExam);
-router.post('/exams/:slug', createQuestion)
-router.patch('/exams/:slug', updateExam);
-router.delete('/exams/:slug', deleteExam);
+router.post('/exams',
+  nameValidator,
+  descriptionValidator,
+  validationCheck,
+  requireAdmin,
+  createExam
+  );
 
-router.patch('/exams/:slug/:questionId', updateQuestion);
-router.delete('/exams/:slug/:questionId', deleteQuestion);
+router.get('/exams/:slug', getExam);
+router.post('/exams/:slug',
+  titleValidator,
+  descriptionValidator,
+  answerValidator,
+  fakeanswer1Validator,
+  fakeanswer2Validator,
+  fakeanswer3Validator,
+  validationCheck,
+  requireAdmin,
+  createQuestion
+  );
+
+router.patch('/exams/:slug',
+  validationCheck,
+  requireAdmin,
+  updateExam
+  );
+
+router.delete('/exams/:slug',requireAdmin, deleteExam);
+
+router.patch('/exams/:slug/:questionId',
+  validationCheck, 
+  requireAdmin,
+  updateQuestion
+  );
+
+router.delete('/exams/:slug/:questionId',requireAdmin, deleteQuestion);
 
 
 router.post('/exams/:slug/results', requireUser, getExamResults);

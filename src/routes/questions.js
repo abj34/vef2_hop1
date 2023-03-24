@@ -44,7 +44,14 @@ export const createQuestion = [
 
 // Create a new Question
 export async function createQuestionHandler(req, res, next) {
-    const { title, description, image } = req.body;
+    const { 
+        title, 
+        description, 
+        image, 
+        answer, 
+        fake_answer_1, 
+        fake_answer_2,
+        fake_answer_3 } = req.body;
     const { slug } = req.params;
 
     const exam = await getExamBySlug(slug);
@@ -55,7 +62,11 @@ export async function createQuestionHandler(req, res, next) {
         description: description || '',
         exam_id: exam.id,
         image: image || '',
-        question_id: slugify(title)
+        question_id: slugify(title),
+        answer: answer,
+        fake_answer_1: fake_answer_1,
+        fake_answer_2: fake_answer_2,
+        fake_answer_3: fake_answer_3
     };
 
     const createdQuestion = await insertQuestion(questionToCreate);
@@ -72,8 +83,15 @@ export const updateQuestion = [
 ];
 
 export async function updateQuestionHandler(req, res, next) {
-    const { title, description, image } = req.body;
+    const { 
+        title, 
+        description, 
+        image} = req.body;
     const { slug, questionId } = req.params;
+
+    const {answer, fake_answer_1, fake_answer_2, fake_answer_3}= req.body;
+
+    const answerData = [answer, fake_answer_1,fake_answer_2, fake_answer_3];
 
     const exam = await getExamBySlug(slug);
     if (!exam) { return next(); }
@@ -105,8 +123,41 @@ export async function updateQuestionHandler(req, res, next) {
     if (!updated) {
         return next(new Error('Unable to update question'));
     }
+    const updatedAnswers = await updateAnswers(question.id, answerData);
+    console.log(answerData)
+    console.log(updatedAnswers)
+    if (!updatedAnswers) {
+        return next(new Error('Unable to update answers'));
+    }
 
     return res.json(updated.rows[0]);
+}
+
+export async function updateAnswers(questionId, answerData) {
+    const { answer, fake_answer_1, fake_answer_2, fake_answer_3 } = answerData;
+
+    const fields = [
+        typeof answer === 'string' && answer ? 'answer' : null,
+        typeof fake_answer_1 === 'string' && fake_answer_1 ? 'fake_answer_1' : null,
+        typeof fake_answer_2 === 'string' && fake_answer_2 ? 'fake_answer_2' : null,
+        typeof fake_answer_3 === 'string' && fake_answer_3 ? 'fake_answer_3' : null,
+    ];
+
+    const values = [
+        typeof answer === 'string' && answer ? answer : null,
+        typeof fake_answer_1 === 'string' && fake_answer_1 ? fake_answer_1 : null,
+        typeof fake_answer_2 === 'string' && fake_answer_2 ? fake_answer_2 : null,
+        typeof fake_answer_3 === 'string' && fake_answer_3 ? fake_answer_3 : null,
+    ];
+
+    const updated = await conditionalUpdate(
+        'answers',
+        questionId,
+        fields,
+        values
+    );
+
+    return updated?.rows[0];
 }
 
 export async function deleteQuestion(req, res, next) {

@@ -179,7 +179,27 @@ export async function insertQuestion(question) {
     const values = [question.title, question.question_id, question.description, question.exam_id];
     const result = await query(q, values);
 
-    return result?.rows[0];
+
+    if(result){
+        const questionId = result.rows[0].id;
+        const q2 = `INSERT INTO answers (answer, question_id, fake_answer_1, fake_answer_2, fake_answer_3)
+        VALUES ($1, $2, $3, $4, $5) RETURNING *`
+        const values2= [
+            question.answer, 
+            questionId, 
+            question.fake_answer_1, 
+            question.fake_answer_2, 
+            question.fake_answer_3 ]
+
+        const result2 = await query(q2, values2);
+
+        if(!result2){
+            null;
+        }
+
+        return result.rows[0];
+    }
+    return null;   
 }
 
 export async function getQuestionByIdAndSlug(id, slug) {

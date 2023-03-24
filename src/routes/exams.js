@@ -189,6 +189,9 @@ export async function deleteExam(req, res, next) {
         return next(new Error('Unable to delete exam'));
     }
     const deletedScore = await deleteFromScores(exam.id);
+    if (!deletedScore) {
+        return next(new Error('Unable to delete exam'));
+    }
 
     return res.status(204).send();
 }
