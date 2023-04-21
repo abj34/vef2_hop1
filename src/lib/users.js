@@ -7,13 +7,9 @@ import pkg from 'bcrypt';
 const { bcryptRounds } = pkg;
 
 export async function comparePasswords(password, hash) {
-  try {
-    return await bcrypt.compare(password, hash);
-  } catch (e) {
-    console.error('Gat ekki borið saman lykilorð', e);
-  }
+  const result = await bcrypt.compare(password, hash);
 
-  return false;
+  return result;
 }
 
 export async function findByUsername(username) {

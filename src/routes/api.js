@@ -25,7 +25,8 @@ import {
   fakeanswer1Validator,
   fakeanswer2Validator,
   fakeanswer3Validator,
-  usernameDoesNotExistValidator} from '../lib/validation.js';
+  usernameDoesNotExistValidator,
+  usernameAndPasswordValidator  } from '../lib/validation.js';
 import { imageHandler } from '../lib/cloudinary.js';
 
 
@@ -135,6 +136,7 @@ router.post(
   '/users/login',
   usernameValidator,
   passwordValidator,
+  usernameAndPasswordValidator,
   validationCheck,
   catchErrors(loginRoute)
 );

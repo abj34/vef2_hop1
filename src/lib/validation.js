@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 import { validationResult } from 'express-validator/src/validation-result.js';
-import { findByUsername } from './users.js';
+import { findByUsername, comparePasswords } from './users.js';
 import xss from 'xss';
 
 
@@ -88,6 +88,38 @@ export const passwordValidator = body('password')
   
       if (user) {
         return Promise.reject(new Error('username already exists'));
+      }
+      return Promise.resolve();
+    }
+  );
+ 
+
+  export const 
+  usernameAndPasswordValidator = body('username').custom(
+    
+    async (username, { req: { body: reqBody } = {} }) => {
+      // Can't bail after username and password validators, so some duplication
+      // of validation here
+      // TODO use schema validation instead?
+      const { password } = reqBody;
+  
+      if (!username || !password) {
+        return Promise.reject(new Error('skip'));
+      }
+  
+      let valid = false;
+      try {
+        const user = await findByUsername(username);
+
+        valid = await comparePasswords(password, user.password);
+        console.log(valid)
+      } catch (e) {
+        // Here we would track login attempts for monitoring purposes
+        console.info(`invalid login attempt for ${username}`);
+      }
+  
+      if (!valid) {
+        return Promise.reject(new Error('username or password incorrect'));
       }
       return Promise.resolve();
     }
